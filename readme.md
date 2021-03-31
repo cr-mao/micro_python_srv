@@ -39,6 +39,8 @@ $ make
 ```
 # 启动服务
 $ make serve
+或者 
+python user_srv/server.py --ip=xxx --port=xxx
 ```
 
 

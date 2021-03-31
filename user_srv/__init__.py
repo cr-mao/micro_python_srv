@@ -1,9 +1,8 @@
 import os
+import argparse
 import sys
 from concurrent import futures
-import logging
 import signal
-
 import grpc
 from loguru import logger
 
@@ -23,7 +22,6 @@ class LogInterceptors(grpc.ServerInterceptor):
         return resp
 
 
-
 # 信号回调函数
 def on_exit(signo, frame):
     logger.info("进程中断")
@@ -32,7 +30,6 @@ def on_exit(signo, frame):
 
 class Applicaton():
     def __init__(self):
-        # logger.add("file_{time}.log")
         pass
 
     def serve(self):
@@ -40,7 +37,14 @@ class Applicaton():
         from user_srv.handler.user import UserServicer
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(LogInterceptors(),))
         user_pb2_grpc.add_UserServicer_to_server(UserServicer(), server)
-        server.add_insecure_port('[::]:50052')
+
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--ip", nargs="?", type=str, default="127.0.0.1", help="bingding ip")
+        parser.add_argument("--port", nargs="?", type=int, default="50052", help="server port")
+        args = parser.parse_args()
+
+        server.add_insecure_port(f"{args.ip}:{args.port}")
+
         """
             sigint CTRL+C
             sigterm kill 
@@ -48,7 +52,7 @@ class Applicaton():
         signal.signal(signal.SIGINT, on_exit)
         signal.signal(signal.SIGTERM, on_exit)
 
-        logger.info(f"启动服务:127.0.0.1:50052")
+        logger.info(f"启动服务:f{args.ip}:{args.port}")
         server.start()
         server.wait_for_termination()
 
