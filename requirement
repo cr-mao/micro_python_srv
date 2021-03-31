@@ -1,0 +1,6 @@
+grpcio==1.36.1
+grpcio-tools==1.26.0
+peewee==3.14.4
+protobuf==3.15.6
+PyMySQL==1.0.2
+six==1.15.0
