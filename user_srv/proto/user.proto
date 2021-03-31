@@ -6,8 +6,11 @@ service  User {
   rpc GetUserByMobile(MobileRequest)  returns (UserInfoResponse); //mobile 查询用户
   rpc GetUserById(IdRequest) returns (UserInfoResponse); // 通过id 查询用户
   rpc CreateUser(CreateUserInfo) returns (UserInfoResponse); // 添加用户
-  rpc UpdateUser(UpdateUserInfo) returns (google.protobuf.Empty); //更新用户 更新失败了呢 ？
+  rpc UpdateUser(UpdateUserInfo) returns (google.protobuf.Empty); //更新用户 更新失败了呢，  应该统一个code 码 表示成功与否先，暂时先这样
+
 }
+
+
 
 message PageInfo{
   uint32  pn = 1;
@@ -42,5 +45,6 @@ message UserInfoResponse {
 message  CreateUserInfo {
   string nickName = 1;
   string passWord = 2;
-  string Mobile = 3;
+  string mobile = 3;
 }
+

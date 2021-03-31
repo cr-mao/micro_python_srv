@@ -52,7 +52,7 @@ class Applicaton():
         signal.signal(signal.SIGINT, on_exit)
         signal.signal(signal.SIGTERM, on_exit)
 
-        logger.info(f"启动服务:f{args.ip}:{args.port}")
+        logger.info(f"启动服务:{args.ip}:{args.port}")
         server.start()
         server.wait_for_termination()
 
