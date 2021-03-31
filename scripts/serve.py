@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+import os
 import sys
 
-# 暂时这么解决了
-sys.path.append("/Users/mac/code/micro_python_srv")
+# pycharm给我们会加上当前项目到path中  ，
+sys.path.append(os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
 from user_srv import app
 

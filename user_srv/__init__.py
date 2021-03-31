@@ -2,7 +2,10 @@ import os
 import sys
 from concurrent import futures
 import logging
+import signal
+
 import grpc
+from loguru import logger
 
 # 解决 自动生成 proto 文件  模块导入问题
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -20,9 +23,17 @@ class LogInterceptors(grpc.ServerInterceptor):
         return resp
 
 
+
+# 信号回调函数
+def on_exit(signo, frame):
+    logger.info("进程中断")
+    sys.exit(0)
+
+
 class Applicaton():
     def __init__(self):
-        logging.basicConfig()
+        # logger.add("file_{time}.log")
+        pass
 
     def serve(self):
         from user_srv.proto import user_pb2, user_pb2_grpc
@@ -30,7 +41,14 @@ class Applicaton():
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(LogInterceptors(),))
         user_pb2_grpc.add_UserServicer_to_server(UserServicer(), server)
         server.add_insecure_port('[::]:50052')
-        print(f"启动服务:127.0.0.1:50052")
+        """
+            sigint CTRL+C
+            sigterm kill 
+        """
+        signal.signal(signal.SIGINT, on_exit)
+        signal.signal(signal.SIGTERM, on_exit)
+
+        logger.info(f"启动服务:127.0.0.1:50052")
         server.start()
         server.wait_for_termination()
 
