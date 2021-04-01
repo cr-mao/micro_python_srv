@@ -7,6 +7,8 @@ import grpc
 from loguru import logger
 
 # 解决 自动生成 proto 文件  模块导入问题
+from common.register import consul
+from user_srv.settings import settings
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 PROTO_DIR = ROOT_PATH + '/proto'
@@ -16,15 +18,16 @@ sys.path.append(PROTO_DIR)
 # 日志拦截器
 class LogInterceptors(grpc.ServerInterceptor):
     def intercept_service(self, continuation, handler_call_details):
-        print("请求start")
+        # print("请求start")
         # print(type(handler_call_details))
         resp = continuation(handler_call_details)
-        print("请求end")
+        # print("请求end")
         return resp
 
 
 # 信号回调函数
 def on_exit(signo, frame):
+    # 删除注册服务 要
     logger.info("进程中断")
     sys.exit(0)
 
@@ -36,15 +39,14 @@ class Applicaton():
     def serve(self):
         from user_srv.proto import user_pb2, user_pb2_grpc
 
-        from common.grpc_health.v1 import health_pb2, health_pb2_grpc,health
+        from common.grpc_health.v1 import health_pb2, health_pb2_grpc, health
 
         from user_srv.handler.user import UserServicer
 
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(LogInterceptors(),))
         user_pb2_grpc.add_UserServicer_to_server(UserServicer(), server)
 
-
-        #https://www.consul.io/api-docs/agent/check#grpcusetls
+        # https://www.consul.io/api-docs/agent/check#grpcusetls
         # grpc 健康监测
         health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
 
@@ -64,6 +66,14 @@ class Applicaton():
 
         logger.info(f"启动服务:{args.ip}:{args.port}")
         server.start()
+        logger.info("服务注册开始")
+
+        register = consul.ConsulRegister(settings.CONSUL_HOST, settings.CONSUL_PORT)
+        if not register.register(settings.SERVICE_NAME, settings.SERVICE_ID, args.ip, args.port, settings.SERVICE_TAG,):
+            logger.info("服务注册失败")
+            sys.exit(0)
+        logger.info("服务注册成功")
+
         server.wait_for_termination()
 
 

@@ -15,6 +15,8 @@ Python版本要求为 Python-3.6.x
 ├── scipts 快捷命令、启动入口
 ├── common
     ├── grpc_health grpc健康监测
+    ├── register    服务注册类库
+
     
 ```
 
@@ -22,13 +24,16 @@ Python版本要求为 Python-3.6.x
 - server: grpc server 
 - 日志库：loguru
 - orm:   peewee
+- 服务注册 consul 
 
 
 ### Quick Start
 
 - 配置文件
-    - 项目根目录下的 `config.py` **放一些基础的配置项目，比如建立新配置**
-    - 项目根目录下的 `config_local.py` **放开发人员本地的不同配置，不进版本管理**
+
+   user_srv/settings/settings.py
+   
+  依赖consul和mysql
 
 - 环境
 ```
@@ -54,6 +59,8 @@ python user_srv/server.py --ip=xxx --port=xxx
 ```
  make codegen
 ```
+
+
 
 
 
