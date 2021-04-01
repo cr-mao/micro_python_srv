@@ -30,6 +30,6 @@ class UserTest:
 
 if __name__ == "__main__":
     user = UserTest()
-    # user.user_list()
+    user.user_list()
     # user.get_user_by_id(1)
-    user.create_user("crmao", "18758327999", "123123")
+    # user.create_user("crmao", "18758327999", "123123")

@@ -40,6 +40,11 @@ class UserStub(object):
         request_serializer=user__pb2.UpdateUserInfo.SerializeToString,
         response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
+    self.CheckPassword = channel.unary_unary(
+        '/User/CheckPassword',
+        request_serializer=user__pb2.PasswrodCheckInfo.SerializeToString,
+        response_deserializer=user__pb2.CheckPasswordResponse.FromString,
+        )
 
 
 class UserServicer(object):
@@ -75,7 +80,14 @@ class UserServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def UpdateUser(self, request, context):
-    """更新用户 更新失败了呢 ？
+    """更新用户 更新失败了呢，  应该统一个code 码 表示成功与否先，暂时先这样
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def CheckPassword(self, request, context):
+    """检测密码
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -108,6 +120,11 @@ def add_UserServicer_to_server(servicer, server):
           servicer.UpdateUser,
           request_deserializer=user__pb2.UpdateUserInfo.FromString,
           response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ),
+      'CheckPassword': grpc.unary_unary_rpc_method_handler(
+          servicer.CheckPassword,
+          request_deserializer=user__pb2.PasswrodCheckInfo.FromString,
+          response_serializer=user__pb2.CheckPasswordResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

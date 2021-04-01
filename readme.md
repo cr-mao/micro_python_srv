@@ -11,6 +11,11 @@ Python版本要求为 Python-3.6.x
     ├── models 存放模型相关
     ├── handler 编写具体service 如userService
     └── tests 测试用例
+
+├── scipts 快捷命令、启动入口
+├── common
+    ├── grpc_health grpc健康监测
+    
 ```
 
 技术选型

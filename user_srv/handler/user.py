@@ -61,7 +61,7 @@ class UserServicer(user_pb2_grpc.UserServicer):
     @logger.catch
     def CreateUser(self, request, context):
         try:
-            user = User.get(User.mobile == request.mobile)
+            User.get(User.mobile == request.mobile)
             context.set_code(grpc.StatusCode.ALREADY_EXISTS)
             context.set_details("用户已经存在")
         except DoesNotExist as e:
@@ -81,6 +81,22 @@ class UserServicer(user_pb2_grpc.UserServicer):
             user.birthday = date.fromtimestamp(request.birthDay)
             user.save()
             return Empty()
+        except DoesNotExist:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("用户不存在")
+            return user_pb2.UserInfoResponse
+
+    @logger.catch
+    def CheckPassword(self, request: user_pb2.PasswrodCheckInfo, context):
+        return user_pb2.CheckPasswordResponse(success=pbkdf2_sha256.verify(request.password, request.encryptedPassword))
+
+    @logger.catch
+    def GetUserByMobile(self, request: user_pb2.MobileRequest, context):
+        try:
+            mobile = request.mobile
+            user = User.get(User.mobile == mobile)
+            user_info_rsp = self.convert_user_rsp(user)
+            return user_info_rsp
         except DoesNotExist:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("用户不存在")

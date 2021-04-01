@@ -7,9 +7,16 @@ service  User {
   rpc GetUserById(IdRequest) returns (UserInfoResponse); // 通过id 查询用户
   rpc CreateUser(CreateUserInfo) returns (UserInfoResponse); // 添加用户
   rpc UpdateUser(UpdateUserInfo) returns (google.protobuf.Empty); //更新用户 更新失败了呢，  应该统一个code 码 表示成功与否先，暂时先这样
-
+  rpc CheckPassword(PasswrodCheckInfo) returns (CheckPasswordResponse); //检测密码
 }
 
+message  PasswrodCheckInfo {
+  string password = 1;
+  string encryptedPassword = 2 ;
+}
+message CheckPasswordResponse {
+  bool success = 1;
+}
 
 
 message PageInfo{

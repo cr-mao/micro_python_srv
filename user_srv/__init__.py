@@ -7,6 +7,7 @@ import grpc
 from loguru import logger
 
 # 解决 自动生成 proto 文件  模块导入问题
+
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 PROTO_DIR = ROOT_PATH + '/proto'
 sys.path.append(PROTO_DIR)
@@ -34,9 +35,18 @@ class Applicaton():
 
     def serve(self):
         from user_srv.proto import user_pb2, user_pb2_grpc
+
+        from common.grpc_health.v1 import health_pb2, health_pb2_grpc,health
+
         from user_srv.handler.user import UserServicer
+
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(LogInterceptors(),))
         user_pb2_grpc.add_UserServicer_to_server(UserServicer(), server)
+
+
+        #https://www.consul.io/api-docs/agent/check#grpcusetls
+        # grpc 健康监测
+        health_pb2_grpc.add_HealthServicer_to_server(health.HealthServicer(), server)
 
         parser = argparse.ArgumentParser()
         parser.add_argument("--ip", nargs="?", type=str, default="127.0.0.1", help="bingding ip")
