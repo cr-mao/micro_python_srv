@@ -1,6 +1,6 @@
 # micro_python_srv
 
-python端微服务
+python services 
 
 Python版本要求为 Python-3.6.x
 
@@ -30,10 +30,10 @@ Python版本要求为 Python-3.6.x
 ### Quick Start
 
 - 配置文件
-
-   user_srv/settings/settings.py
+  
    
-  依赖consul和mysql
+- 
+
 
 - 环境
 ```
@@ -42,6 +42,18 @@ $ python3.6 -m venv .virtualenv
 
 # 安装依赖
 $ make
+
+# 配置文件
+ user_srv/settings/settings.py 
+ 依赖consul和mysql 
+ 先创建库
+
+#初始化表，数据
+见user_srv/models/models.py
+
+#本地启动consul
+$ consul agent -dev
+  
 ```
 
 - 运行
@@ -53,8 +65,6 @@ $ make serve
 python user_srv/server.py --ip=xxx --port=xxx
 ```
 
-
-### 便捷
 - proto文件生成命令
 ```
  make codegen

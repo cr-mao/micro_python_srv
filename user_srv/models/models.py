@@ -24,24 +24,30 @@ class User(BaseModel):
 
 
 if __name__ == "__main__":
+
+    # 第一步 生成表
     settings.DB.create_tables([User])
-    #
+    # 第二步 生成数据 start
+    # from passlib.hash import pbkdf2_sha256
+    # for i  in range(10):
+    #     user = User()
+    #     user.nick_name = f"crmao{i}"
+    #     user.mobile = f"1875832795{i}"
+    #     user.password = pbkdf2_sha256.hash("admin123")
+    #     user.save()
+    # 第二步 生成数据 end
+
+
+
+
+
+    # for user in User.select():
+    #     print(pbkdf2_sha256.verify("admin123",user.password))
     # import hashlib
-    #
     # m = hashlib.md5()
     # m.update(b"123456")
     # print(m.hexdigest())
 
-    # from passlib.hash import pbkdf2_sha256
-    # for i  in range(10):
-    #     user = User()
-    #     user.nick_name = f"bobby{i}"
-    #     user.mobile = f"1875832795{i}"
-    #     user.password = pbkdf2_sha256.hash("admin123")
-    #     user.save()
-
-    # for user in User.select():
-    #     print(pbkdf2_sha256.verify("admin123",user.password))
 
     # users = User.select().limit(2).offset(0)
 
