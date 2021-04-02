@@ -45,7 +45,7 @@ class ConsulRegister(base.Register):
         :param service_id:
         :return:
         """
-        return self.c.agent.service.deregister("user-srv")
+        return self.c.agent.service.deregister(service_id)
 
     def get_all_service(self):
         """

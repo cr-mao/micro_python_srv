@@ -73,6 +73,13 @@ python user_srv/server.py --ip=xxx --port=xxx
 
 
 
+#### 其他说明
+```
+启动服务，服务端口随机生成，向consul注册服务的时候，server_id也是随机生成
+用于多实例负载均衡
+```
+
+
 
 
 
