@@ -23,8 +23,10 @@ class LogInterceptors(grpc.ServerInterceptor):
     def intercept_service(self, continuation, handler_call_details):
         # print("请求start")
         # print(type(handler_call_details))
+        print("start")
         resp = continuation(handler_call_details)
         # print("请求end")
+        print("end")
         return resp
 
 

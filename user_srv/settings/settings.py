@@ -22,6 +22,6 @@ CONSUL_PORT = 8500
 
 # 服务相关配置
 SERVICE_NAME = "user-srv"
-SERVICE_ID = "user-srv"
+SERVICE_ID = "user-srv" # 作废 ，无用了
 SERVICE_TAG = ["python-srv"]
 
