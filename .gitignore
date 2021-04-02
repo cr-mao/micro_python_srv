@@ -40,17 +40,10 @@ test*.py
 venv
 node_modules/
 
-dist/
 
 /config_local.py
-17monipdb.datx
-phone.dat
-
-/fack-flask-logging.txt
-/config_pytest.py
 .python-version
 /test.py
-*.xls
-**/*.xls
 *.sql
-tempdir/*
+nacos-data
+

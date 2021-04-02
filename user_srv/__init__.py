@@ -103,6 +103,9 @@ class Applicaton():
             sys.exit(0)
         logger.info("服务注册成功")
 
+        # 监听nacos 配置变化
+        # settings.nacosClient.add_config_watchers(settings.data_id, settings.group, [settings.config_change_callback])
+
         server.wait_for_termination()
 
 

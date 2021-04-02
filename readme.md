@@ -11,7 +11,7 @@ Python版本要求为 Python-3.6.x
     ├── models 存放模型相关
     ├── handler 编写具体service 如userService
     └── tests 测试用例
-
+├── nacos  
 ├── scipts 快捷命令、启动入口
 ├── common
     ├── grpc_health grpc健康监测
@@ -25,6 +25,7 @@ Python版本要求为 Python-3.6.x
 - 日志库：loguru
 - orm:   peewee
 - 服务注册 consul 
+- 配置中心 [nacos](https://github.com/nacos-group/nacos-sdk-python) 
 
 
 ### Quick Start
@@ -53,7 +54,10 @@ $ make
 
 #本地启动consul
 $ consul agent -dev
-  
+ 
+
+#启动nacos
+$ docker run --name nacos-standalone -e MODE=standalone -e JVM_XMS=512m -e JVM_XMX=512m -e JVM_XMN=256m -p 8848:8848 -d nacos/nacos-server:latest
 ```
 
 - 运行
