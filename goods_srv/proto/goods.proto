@@ -1,0 +1,96 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+option go_package = ".;proto";
+
+service  Goods {
+  //商品接口
+  rpc GoodsList(GoodsFilterRequest) returns(GoodsListResponse);
+  rpc BatchGetGoods(BatchGoodsIdInfo) returns(GoodsListResponse);
+  rpc CreateGoods(CreateGoodsInfo) returns(GoodsInfoResponse);
+  rpc DeleteGoods(DeleteGoodsInfo) returns(google.protobuf.Empty);
+  rpc UpdateGoods(CreateGoodsInfo) returns(google.protobuf.Empty);
+  rpc GetGoodsDetail(GoodInfoRequest) returns(GoodsInfoResponse);
+}
+
+message GoodsListResponse {
+  repeated GoodsInfoResponse goods = 1;
+  int32 total = 2;
+}
+
+message  BatchGoodsIdInfo {
+  repeated  int32  id = 1;
+}
+message DeleteGoodsInfo{
+  int32 id = 1;
+}
+message GoodInfoRequest{
+  int32 id = 1;
+}
+
+message  CreateGoodsInfo {
+  int32  id = 1;
+  string name = 2;
+  string goodsSn = 3;
+  int32 stocks = 7;
+  float marketPrice = 8;
+  float shopPrice = 9;
+  string goodsBrief = 10;
+  string goodsDesc = 11;
+  bool shipFree = 12;
+  repeated string images = 13;
+  repeated string descImages = 14;
+  string goodsFrontImage = 15;
+  bool isNew = 16;
+  bool isHot = 17;
+  bool onSale = 18;
+  int32 categoryId = 19;
+  int32 brand = 20;
+}
+
+message GoodsInfoResponse {
+  int32 id = 1;
+  int32  categoryId = 2;
+  string name = 3;
+  string goodsSn = 4;
+  int32 clickNum = 5;
+  int32  soldNum = 6;
+  int32  favNum = 7;
+  float marketPrice = 9;
+  float shopPrice = 10;
+  string goodsBrief = 11;
+  string goodsDesc = 12;
+  bool shipFree = 13;
+  repeated string images = 14;
+  repeated string descImages = 15;
+  string goodsFrontImage = 16;
+  bool isNew = 17;
+  bool isHot = 18;
+  bool onSale = 19;
+  int64  addTime = 20;
+  CategoryBriefInfoResponse category = 21;
+  BrandInfoResponse brand = 22;
+}
+
+message  CategoryBriefInfoResponse {
+  int32  id = 1;
+  string name = 2;
+}
+
+message BrandInfoResponse {
+  int32  id = 1;
+  string name = 2;
+}
+
+
+message GoodsFilterRequest {
+  int32  priceMin = 1;
+  int32  priceMax = 2;
+  bool isHot = 3;
+  bool isNew = 4;
+  bool isTab = 5;
+  int32 topCategroy = 6;
+  int32 pages = 7;
+  int32 pagePerNums = 8;
+  string keyWords = 9;
+  int32 brand = 10;
+}

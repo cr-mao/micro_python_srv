@@ -12,8 +12,11 @@ common:
 
 
 # 运行服务端
-serve: common
-	$(VENV_PYTHON) scripts/serve.py
+user_serve: common
+	$(VENV_PYTHON) scripts/user_serve.py
+
+goods_serve: common
+	$(VENV_PYTHON) scripts/goods_serve.py
 
 
 # 别名，留在这里支持老的用法

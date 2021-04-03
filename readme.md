@@ -5,7 +5,8 @@ python services
 Python版本要求为 Python-3.6.x
 
 ```
-├── user_srv  用户微服务
+├── goods_srv 商品相关服务
+├── user_srv  用户相关服务
     ├── proto proto相关文件
     ├── settings 配置初始化
     ├── models 存放模型相关
@@ -46,11 +47,13 @@ $ make
 
 # 配置文件
  user_srv/settings/settings.py 
+ goods_srv/settings/settings.py 
  依赖consul和mysql 
  先创建库
 
-#初始化表，数据
-见user_srv/models/models.py
+#初始化表,运可以下文件
+user_srv/models/models.py
+goods_srv/models/models.py
 
 #本地启动consul
 $ consul agent -dev
@@ -63,10 +66,13 @@ $ docker run --name nacos-standalone -e MODE=standalone -e JVM_XMS=512m -e JVM_X
 - 运行
 
 ```
-# 启动服务
-$ make serve
+# 启动用户服务
+$ make user_serve
+# 启动商品服务
+$ make goods_serve
 或者 
 python user_srv/server.py --ip=xxx --port=xxx
+python goods_srv/server.py --ip=xxx --port=xxx
 ```
 
 - proto文件生成命令

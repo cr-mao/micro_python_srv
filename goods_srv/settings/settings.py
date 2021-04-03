@@ -13,10 +13,10 @@ class ReconnectMysqlDATABASE(ReconnectMixin, PooledMySQLDatabase):
 NACOS = {
     "Host": "127.0.0.1",
     "Port": 8848,
-    "NameSpace": "f59db538-cb44-45e0-96fd-3f4262e37e5b",
+    "NameSpace": "faf65a64-1d0f-434d-9b59-c1bbd3462ed5",
     "User": "nacos",
     "Password": "nacos",
-    "DataId": "python-user-srv.json",
+    "DataId": "python-goods-srv.json",
     "Group": "dev",
 }
 SERVER_ADDRESSES = f"http://{NACOS['Host']}:{NACOS['Port']}"
@@ -26,7 +26,7 @@ group = NACOS["Group"]
 
 configs = {
     "mysql": {
-        "db": "micro_user_srv",
+        "db": "micro_goods_srv",
         "host": "127.0.0.1",
         "port": 3306,
         "user": "root",
@@ -36,16 +36,17 @@ configs = {
         "host": "127.0.0.1",
         "port": 8500
     },
-    "service_name": "user-srv",
-    "service_tag": ["python-srv1"]
+    "service_name": "goods-srv",
+    "service_tag": ["goods-srv-tag"]
 }
+
+
+
 
 
 def config_change_callback(args):
     global configs
     configs = json.loads(args["raw_content"])
-
-
 
 
 # 手动开关 默认开启nacos
