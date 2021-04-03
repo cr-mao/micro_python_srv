@@ -4,14 +4,16 @@ from peewee import *
 from playhouse.pool import PooledMySQLDatabase
 from playhouse.shortcuts import ReconnectMixin
 
-
 # 连接池
 # ReconnectMixin 防止连接断开
+from goods_srv.settings import settings
+
+
 class ReconnectMysqlDATABASE(ReconnectMixin, PooledMySQLDatabase):
     pass
 
 
-DB = ReconnectMysqlDATABASE("micro_inventory_srv", host="127.0.0.1", port=3306, password="", user="root")
+DB = settings.DB
 
 
 class BaseModel(Model):
