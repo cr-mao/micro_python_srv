@@ -18,6 +18,9 @@ user_serve: common
 goods_serve: common
 	$(VENV_PYTHON) scripts/goods_serve.py
 
+inventory_serve: common
+	$(VENV_PYTHON) scripts/inventory_serve.py
+
 
 # 别名，留在这里支持老的用法
 install: pip

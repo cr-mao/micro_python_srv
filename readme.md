@@ -12,7 +12,7 @@ Python版本要求为 Python-3.6.x
     ├── models 存放模型相关
     ├── handler 编写具体service 如userService
     └── tests 测试用例
-├── nacos  
+├── nacos  nacos操作库 
 ├── scipts 快捷命令、启动入口
 ├── common
     ├── grpc_health grpc健康监测
@@ -70,9 +70,15 @@ $ docker run --name nacos-standalone -e MODE=standalone -e JVM_XMS=512m -e JVM_X
 $ make user_serve
 # 启动商品服务
 $ make goods_serve
+
+#启动库存服务
+$ make 
+
 或者 
 python user_srv/server.py --ip=xxx --port=xxx
 python goods_srv/server.py --ip=xxx --port=xxx
+python inventory_srv/server.py --ip=xxx --port=xxx
+
 ```
 
 - proto文件生成命令
