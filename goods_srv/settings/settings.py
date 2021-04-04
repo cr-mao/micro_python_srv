@@ -37,7 +37,12 @@ configs = {
         "port": 8500
     },
     "service_name": "goods-srv",
-    "service_tag": ["goods-srv-tag"]
+    "service_tag": ["goods-srv-tag"],
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379,
+        "db": 0
+    }
 }
 
 

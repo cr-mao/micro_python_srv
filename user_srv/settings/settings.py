@@ -37,7 +37,12 @@ configs = {
         "port": 8500
     },
     "service_name": "user-srv",
-    "service_tag": ["python-srv1"]
+    "service_tag": ["python-srv1"],
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379,
+        "db": 0
+    }
 }
 
 
