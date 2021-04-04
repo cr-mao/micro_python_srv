@@ -5,7 +5,7 @@ from inventory_srv.proto import inventory_pb2, inventory_pb2_grpc
 
 class InventoryTest:
     def __init__(self):
-        channel = grpc.insecure_channel("127.0.0.1:63955")
+        channel = grpc.insecure_channel("127.0.0.1:51899")
         self.stub = inventory_pb2_grpc.InventoryStub(channel)
 
     def set_inv(self):
@@ -58,5 +58,5 @@ if __name__ == "__main__":
     inventory = InventoryTest()
     # inventory.set_inv()
     # inventory.get_inv()
-    # inventory.sell()
-    inventory.reback()
+    inventory.sell()
+    # inventory.reback()

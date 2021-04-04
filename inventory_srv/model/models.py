@@ -6,7 +6,7 @@ from playhouse.shortcuts import ReconnectMixin
 
 # 连接池
 # ReconnectMixin 防止连接断开
-from goods_srv.settings import settings
+from inventory_srv.settings import settings
 
 
 class ReconnectMysqlDATABASE(ReconnectMixin, PooledMySQLDatabase):

@@ -1,6 +1,8 @@
 import grpc
 from google.protobuf import empty_pb2
 from loguru import logger
+
+from common.lock.py_redis_lock import Lock
 from inventory_srv.proto import inventory_pb2, inventory_pb2_grpc
 from inventory_srv.model.models import Inventory, DoesNotExist
 from inventory_srv.settings import settings
@@ -58,6 +60,8 @@ class InventoryServicer(inventory_pb2_grpc.InventoryServicer):
         # 事务
         with settings.DB.atomic() as txn:
             for item in request.goodsInfo:
+                lock = Lock(settings.REDIS_CLIENT, f"lock:goods_{item.goodsId}", auto_renewal=True, expire=10)
+                lock.acquire()
                 try:
                     goods_inv = Inventory.get(Inventory.goods == item.goodsId)
                 except DoesNotExist as e:
@@ -73,6 +77,7 @@ class InventoryServicer(inventory_pb2_grpc.InventoryServicer):
                 else:
                     goods_inv.stocks -= item.num
                     goods_inv.save()
+                lock.release()
         return empty_pb2.Empty()
 
     @logger.catch
@@ -85,6 +90,8 @@ class InventoryServicer(inventory_pb2_grpc.InventoryServicer):
         """
         with settings.DB.atomic() as txn:
             for item in request.goodsInfo:
+                lock = Lock(settings.REDIS_CLIENT, f"lock:goods_{item.goodsId}", auto_renewal=True, expire=10)
+                lock.acquire()
                 try:
                     goods_inv = Inventory.get(Inventory.goods == item.goodsId)
                 except DoesNotExist as e:
@@ -95,4 +102,6 @@ class InventoryServicer(inventory_pb2_grpc.InventoryServicer):
                 # 可能数据不一致
                 goods_inv.stocks += item.num
                 goods_inv.save()
+                lock.release()
+
         return empty_pb2.Empty()

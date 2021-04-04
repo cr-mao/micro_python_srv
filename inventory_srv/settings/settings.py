@@ -2,6 +2,7 @@ import nacos
 import json
 from playhouse.pool import PooledMySQLDatabase
 from playhouse.shortcuts import ReconnectMixin
+import redis
 
 
 # 连接池
@@ -37,7 +38,12 @@ configs = {
         "port": 8500
     },
     "service_name": "inventory_srv",
-    "service_tag": ["inventory_srv-tag"]
+    "service_tag": ["inventory_srv-tag"],
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379,
+        "db": 0
+    }
 }
 
 
@@ -61,6 +67,12 @@ MYSQL_PASSWORD = configs["mysql"]["password"]
 DB = ReconnectMysqlDATABASE(MYSQL_DB, host=MYSQL_HOST, port=MYSQL_PORT, password=MYSQL_PASSWORD, user=MYSQL_USER)
 CONSUL_HOST = configs["consul"]["host"]
 CONSUL_PORT = configs["consul"]["port"]
+# redis
+REDIS_HOST = configs["redis"]["host"]
+REDIS_PORT = configs["redis"]["port"]
+REDIS_DB = configs["redis"]["db"]
+pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
+REDIS_CLIENT = redis.StrictRedis(connection_pool=pool)
 
 # consul 服务相关配置
 SERVICE_NAME = configs["service_name"]
