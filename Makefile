@@ -12,14 +12,18 @@ common:
 
 
 # 运行服务端
+# 用户服务
 user_serve: common
 	$(VENV_PYTHON) scripts/user_serve.py
-
+# 商品服务
 goods_serve: common
 	$(VENV_PYTHON) scripts/goods_serve.py
-
+# 库存服务
 inventory_serve: common
 	$(VENV_PYTHON) scripts/inventory_serve.py
+# 订单服务
+order_serve: common
+	$(VENV_PYTHON) scripts/order_serve.py
 
 
 # 别名，留在这里支持老的用法

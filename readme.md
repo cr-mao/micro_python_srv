@@ -1,22 +1,26 @@
 # micro_python_srv
 
-python services 
+a simple shop project python services 
 
 Python版本要求为 Python-3.6.x
 
 ```
-├── goods_srv 商品相关服务
-├── user_srv  用户相关服务
+├── order_srv 订单服务
+├── inventory_srv 库存服务
+├── goods_srv 商品服务
+├── user_srv  用户服务
     ├── proto proto相关文件
     ├── settings 配置初始化
     ├── models 存放模型相关
-    ├── handler 编写具体service 如userService
+    ├── handler 编写具体service 
     └── tests 测试用例
 ├── nacos  nacos操作库 
 ├── scipts 快捷命令、启动入口
 ├── common
     ├── grpc_health grpc健康监测
     ├── register    服务注册类库
+    ├── lock        分布锁库
+
 
     
 ```
@@ -45,15 +49,18 @@ $ python3.6 -m venv .virtualenv
 # 安装依赖
 $ make
 
-# 配置文件
+# 修改配置,注意nacos的地址
  user_srv/settings/settings.py 
- goods_srv/settings/settings.py 
- 依赖consul和mysql 
- 先创建库
+ goods_srv/settings/settings.py
+ inventory_srv/settings/settings.py
+ order_srv/settings/settings.py    
 
-#初始化表,运可以下文件
+# 初始化表，库手动创建
 user_srv/models/models.py
 goods_srv/models/models.py
+inventory_srv/models/models.py
+order_srv/models/models.py
+
 
 #本地启动consul
 $ consul agent -dev
@@ -70,14 +77,14 @@ $ docker run --name nacos-standalone -e MODE=standalone -e JVM_XMS=512m -e JVM_X
 $ make user_serve
 # 启动商品服务
 $ make goods_serve
-
 #启动库存服务
-$ make 
+$ make inventory_serve
 
 或者 
 python user_srv/server.py --ip=xxx --port=xxx
 python goods_srv/server.py --ip=xxx --port=xxx
 python inventory_srv/server.py --ip=xxx --port=xxx
+python order_srv/server.py --ip=xxx --port=xxx
 
 ```
 
