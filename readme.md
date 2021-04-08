@@ -5,6 +5,8 @@ a simple shop project python services
 Python版本要求为 Python-3.6.x
 
 ```
+├── build 
+     ├── rocketmq docker-compose安装方式
 ├── order_srv 订单服务
 ├── inventory_srv 库存服务
 ├── goods_srv 商品服务
@@ -31,6 +33,8 @@ Python版本要求为 Python-3.6.x
 - orm:   peewee
 - 服务注册 consul 
 - 配置中心 [nacos](https://github.com/nacos-group/nacos-sdk-python) 
+- mq:     rocketmq
+
 
 
 ### Quick Start
