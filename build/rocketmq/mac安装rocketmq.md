@@ -8,6 +8,9 @@ https://maven.apache.org/download.cgi
 
 
 https://www.jianshu.com/p/478766b59241
-
+```shell
+$ mqnamesrv
+$ mqbroker -n localhost:9876
+```
 
 界面暂时没有 
