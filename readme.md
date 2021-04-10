@@ -39,10 +39,6 @@ Python版本要求为 Python-3.6.x
 
 ### Quick Start
 
-- 配置文件
-  
-   
-- 
 
 
 - 环境
@@ -53,7 +49,7 @@ $ python3.6 -m venv .virtualenv
 # 安装依赖
 $ make
 
-# 修改配置,注意nacos的地址
+# 修改配置
  user_srv/settings/settings.py 
  goods_srv/settings/settings.py
  inventory_srv/settings/settings.py
@@ -72,17 +68,21 @@ $ consul agent -dev
 
 #启动nacos
 $ docker run --name nacos-standalone -e MODE=standalone -e JVM_XMS=512m -e JVM_XMX=512m -e JVM_XMN=256m -p 8848:8848 -d nacos/nacos-server:latest
+
+# 启动jaeger 
+$ docker run --rm --name jaeger  -p6831:6831/udp  -p16686:16686  jaegertracing/all-in-one:latest
+
 ```
+
+
 
 - 运行
 
 ```
-# 启动用户服务
 $ make user_serve
-# 启动商品服务
 $ make goods_serve
-#启动库存服务
 $ make inventory_serve
+$ make order_serve
 
 或者 
 python user_srv/server.py --ip=xxx --port=xxx

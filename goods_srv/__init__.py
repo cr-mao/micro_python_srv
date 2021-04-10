@@ -2,6 +2,7 @@ import os
 import argparse
 import socket
 import sys
+import time
 from concurrent import futures
 import signal
 import grpc
@@ -12,6 +13,14 @@ import uuid
 # 解决 自动生成 proto 文件  模块导入问题
 from common.register import consul
 from goods_srv.settings import settings
+
+# opentracing
+
+from grpc_opentracing import open_tracing_server_interceptor
+from grpc_opentracing.grpcext import intercept_server
+from jaeger_client import Config
+
+_ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 PROTO_DIR = ROOT_PATH + '/proto'
@@ -66,7 +75,27 @@ class Applicaton():
         from common.grpc_health.v1 import health_pb2_grpc, health
         from goods_srv.handler.goods import GoodsServicer
 
+        # 初始化tracer (jaeger)
+        config = Config(
+            config={  # usually read from some yaml config
+                'sampler': {
+                    'type': 'const',  # 全部
+                    'param': 1,  # 1开启全部采样 0 关闭全部采样
+                },
+                'local_agent': {
+                    'reporting_host': '127.0.0.1',
+                    'reporting_port': '6831',
+                },
+                'logging': True,
+            },
+            service_name='python-goods-grpc-srv',
+            validate=True,
+        )
+        tracer = config.initialize_tracer()
+
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(LogInterceptors(),))
+        tracer_interceptor = open_tracing_server_interceptor(tracer)
+        server = intercept_server(server, tracer_interceptor)
         goods_pb2_grpc.add_GoodsServicer_to_server(GoodsServicer(), server)
         # https://www.consul.io/api-docs/agent/check#grpcusetls
         # grpc 健康监测服务
@@ -105,7 +134,14 @@ class Applicaton():
 
         # 监听nacos 配置变化 todo ,配置信息 如果重新加载
         # settings.nacosClient.add_config_watchers(settings.data_id, settings.group, [settings.config_change_callback])
-        server.wait_for_termination()
+        # server.wait_for_termination()
+        try:
+            while True:
+                time.sleep(_ONE_DAY_IN_SECONDS)
+        except KeyboardInterrupt:
+            server.stop(0)
+
+        tracer.close()
 
 
 app = Applicaton()
